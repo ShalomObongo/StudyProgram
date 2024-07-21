@@ -26,8 +26,8 @@ A dynamic and interactive study program planner built with Next.js, React, and T
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/study-program-planner.git
-   cd study-program-planner
+   git clone https://github.com/ShalomObongo/StudyProgram
+   cd Study-Program
    ```
 
 2. Install dependencies:
@@ -70,7 +70,7 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 ## 📁 Project Structure
 
 ```
-study-program-planner/
+Study-Program/
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx
