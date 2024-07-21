@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { DarkModeToggle } from './DarkModeToggle';
 
 interface Exam {
   date: string;
@@ -107,6 +108,19 @@ function formatTime(date: Date): string {
 
 export default function StudyProgram() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date('2024-07-21'));
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const nextDay = () => {
     setCurrentDate(prevDate => {
@@ -128,6 +142,10 @@ export default function StudyProgram() {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Study Program</h1>
+        <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+      </div>
       <Card className="mb-4">
         <CardHeader>
           <CardTitle>Detailed Study Program</CardTitle>
