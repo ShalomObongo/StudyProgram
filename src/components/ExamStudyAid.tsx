@@ -18,8 +18,8 @@ const topics = [
       "Finding inverse of matrix (2*2, 3*3, 4*4, etc.)"
     ],
     resources: [
-      { type: "Notes", link: "https://www.mathsisfun.com/algebra/matrix-introduction.html" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=xyAuNHPsq-g" }
+      { type: "Notes", link: "https://www.statlect.com/matrix-algebra/" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=yRwQ7A6jVLk" }
     ]
   },
   {
@@ -30,7 +30,7 @@ const topics = [
     ],
     resources: [
       { type: "Notes", link: "https://www.investopedia.com/terms/i/input-output-analysis.asp" },
-      { type: "Video", link: "https://www.youtube.com/results?search_query=input+output+models" }
+      { type: "Video", link: "https://study.com/academy/lesson/input-output-model.html" }
     ]
   },
   {
@@ -42,8 +42,8 @@ const topics = [
       "Solve steady state probabilities/Long-run probabilities"
     ],
     resources: [
-      { type: "Notes", link: "https://www.mathworks.com/help/econ/markov-chain-models.html" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=i3AkTO9HLXo" }
+      { type: "Notes", link: "https://www.statlect.com/probability/markov-chains" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=0X1c9x9T8H4" }
     ]
   },
   {
@@ -54,8 +54,8 @@ const topics = [
       "Solve LPP using graphical method"
     ],
     resources: [
-      { type: "Notes", link: "https://www.geeksforgeeks.org/linear-programming/" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=E72DWgKP_1Y" }
+      { type: "Notes", link: "https://www.statlect.com/optimization/linear-programming" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=Bzzqx1F23a8" }
     ]
   },
   {
@@ -65,8 +65,8 @@ const topics = [
       "Solve LPP using simplex method"
     ],
     resources: [
-      { type: "Notes", link: "https://www.mathsisfun.com/algebra/simplex-method.html" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=yBtL8xm3bZk" }
+      { type: "Notes", link: "https://www.statlect.com/optimization/simplex-method" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=3b4xT6cW8rM" }
     ]
   },
   {
@@ -77,8 +77,8 @@ const topics = [
       "Apply sensitivity analysis in interpretation of business problems"
     ],
     resources: [
-      { type: "Notes", link: "https://www.sciencedirect.com/topics/engineering/sensitivity-analysis" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=4U3RhZEf_1w" }
+      { type: "Notes", link: "https://www.statlect.com/optimization/duality" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=Kqz6L8s6h3E" }
     ]
   },
   {
@@ -89,8 +89,8 @@ const topics = [
       "Using the Least Cost Cell Method to solve transportation problem"
     ],
     resources: [
-      { type: "Notes", link: "https://www.geeksforgeeks.org/transportation-problem-set-1-introduction/" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=oeVvqbVXbiM" }
+      { type: "Notes", link: "https://www.statlect.com/optimization/transportation-problem" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=G2mZ2p3w1L0" }
     ]
   },
   {
@@ -100,8 +100,8 @@ const topics = [
       "Solve Assignment Problems for workers, Machines etc."
     ],
     resources: [
-      { type: "Notes", link: "https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=BUGIhEecipE" }
+      { type: "Notes", link: "https://www.statlect.com/optimization/assignment-problem" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=6ZcZs2Y3g7A" }
     ]
   },
   {
@@ -113,8 +113,8 @@ const topics = [
       "Solve the network problem using PERT"
     ],
     resources: [
-      { type: "Notes", link: "https://www.projectmanager.com/guides/critical-path-method" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=5ydM4oLsimI" }
+      { type: "Notes", link: "https://www.statlect.com/optimization/network-flow" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=6kDgU5YgZ7A" }
     ]
   }
 ];
