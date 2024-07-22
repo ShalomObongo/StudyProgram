@@ -29,8 +29,8 @@ const topics = [
       "Solve Two and Three industry models"
     ],
     resources: [
-      { type: "Notes", link: "https://www.economicsdiscussion.net/articles/input-output-analysis-meaning-and-types/2041" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=7OoSXjJg51k" }
+      { type: "Notes", link: "https://www.investopedia.com/terms/i/input-output-analysis.asp" },
+      { type: "Video", link: "https://www.youtube.com/results?search_query=input+output+models" }
     ]
   },
   {
@@ -54,7 +54,7 @@ const topics = [
       "Solve LPP using graphical method"
     ],
     resources: [
-      { type: "Notes", link: "https://www.geeksforgeeks.org/linear-programming-introduction/" },
+      { type: "Notes", link: "https://www.geeksforgeeks.org/linear-programming/" },
       { type: "Video", link: "https://www.youtube.com/watch?v=E72DWgKP_1Y" }
     ]
   },
