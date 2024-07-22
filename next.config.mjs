@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['study-program-pi.vercel.app'],
+    domains: ['study-programme.vercel.app'],
   },
 };
 

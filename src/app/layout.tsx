@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { DarkModeProvider } from "@/contexts/DarkModeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,10 +36,12 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={inter.className}>
-        {children}
-        <SpeedInsights />
-      </body>
+      <DarkModeProvider>
+        <body className={inter.className}>
+          {children}
+          <SpeedInsights />
+        </body>
+      </DarkModeProvider>
     </html>
   );
 }

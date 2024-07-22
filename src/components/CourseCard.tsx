@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import Link from 'next/link';
 
 interface CourseCardProps {
   exam: {
@@ -11,9 +12,10 @@ interface CourseCardProps {
     venue: string;
   };
   currentDate: Date;
+  studyAidLink?: string;
 }
 
-export function CourseCard({ exam, currentDate }: CourseCardProps) {
+export function CourseCard({ exam, currentDate, studyAidLink }: CourseCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const courseName = exam.course.split(': ')[1];
   const examDate = new Date(exam.date);
@@ -45,6 +47,11 @@ export function CourseCard({ exam, currentDate }: CourseCardProps) {
             <p>Venue: {exam.venue}</p>
             <p>Course Code: {exam.course.split(': ')[0]}</p>
           </div>
+        )}
+        {studyAidLink && (
+          <Link href={studyAidLink} className="mt-2 block">
+            <Button variant="outline" size="sm">View Study Aid</Button>
+          </Link>
         )}
       </CardContent>
     </Card>
