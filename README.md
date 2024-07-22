@@ -14,6 +14,10 @@ A dynamic and interactive study program planner built with Next.js, React, and T
 - 🔄 Dynamic schedule generation based on exam dates
 - 📊 Course-specific study cards
 - 🎨 Sleek UI with Tailwind CSS and custom components
+- 🌓 Dark mode support
+- 📱 Responsive design
+- 📊 Progress tracking for overall and individual courses
+- 📚 Detailed study aid for specific courses (e.g., Operations Research)
 
 ## 🚀 Getting Started
 
@@ -57,15 +61,19 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 1. **Daily Schedule**: Navigate through dates to view a detailed study plan for each day.
 2. **Exam Overview**: See all upcoming exams with dates, times, and venues.
 3. **Dynamic Planning**: The schedule automatically adjusts based on proximity to exam dates.
+4. **Progress Tracking**: Monitor your overall progress and individual course progress.
+5. **Dark Mode**: Toggle between light and dark modes for comfortable viewing.
+6. **Study Aid**: Access detailed study materials for specific courses (currently available for Operations Research).
 
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 14.2.5
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **UI Components**: Custom components (Card, Button)
+- **UI Components**: Custom components (Card, Button, Accordion)
 - **Icons**: Lucide React
 - **Performance**: Vercel Speed Insights
+- **OG Image Generation**: @vercel/og
 
 ## 📁 Project Structure
 
@@ -73,18 +81,35 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 Study-Program/
 ├── src/
 │   ├── app/
+│   │   ├── api/
+│   │   │   └── og/
+│   │   │       └── route.tsx
+│   │   ├── exam-study-aid/
+│   │   │   └── page.tsx
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
 │   │   └── globals.css
 │   ├── components/
+│   │   ├── CalendarView.tsx
+│   │   ├── CourseCard.tsx
+│   │   ├── DarkModeToggle.tsx
+│   │   ├── ExamStudyAid.tsx
+│   │   ├── ProgressTracker.tsx
 │   │   ├── StudyProgram.tsx
 │   │   └── ui/
+│   │       ├── accordion.tsx
 │   │       ├── button.tsx
 │   │       └── card.tsx
+│   ├── contexts/
+│   │   └── DarkModeContext.tsx
 │   └── lib/
 │       └── utils.ts
 ├── public/
+├── .eslintrc.json
+├── .gitignore
+├── next.config.mjs
 ├── package.json
+├── postcss.config.mjs
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
@@ -114,6 +139,7 @@ This project is licensed under the MIT License.
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Lucide React](https://lucide.dev/)
 - [Vercel](https://vercel.com/)
+- [Radix UI](https://www.radix-ui.com/)
 
 ---
 
