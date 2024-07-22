@@ -1,14 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { useDarkMode } from '@/contexts/DarkModeContext';
 import { ProgressTracker } from './ProgressTracker';
 import { CalendarView } from './CalendarView';
 import { CourseCard } from './CourseCard';
-import Link from 'next/link';
 import { DarkModeToggle } from './DarkModeToggle';
 
 interface Exam {
@@ -81,7 +78,6 @@ function generateDetailedStudyPlan(date: Date, exams: Exam[]): ScheduleItem[] {
       const nextExamToStudy = remainingExams[0];
       const nextExamCourse = nextExamToStudy.course.split(': ')[1];
       const studyStartTime = `${(examEndHour + 1).toString().padStart(2, '0')}:00`;
-      const studyEndTime = "20:00";
 
       schedule.push(
         { time: `${examEndTime} - ${studyStartTime}`, activity: "Rest and refreshment after exam" },

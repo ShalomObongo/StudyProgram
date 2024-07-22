@@ -132,7 +132,7 @@ const ExamStudyAid = () => {
       </div>
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>BBT 3205: Operations Research Study Guide</CardTitle>
+          <CardTitle>ICS 3106: Operations Research Study Guide</CardTitle>
           <CardDescription>Interactive study guide for Operations Research topics</CardDescription>
         </CardHeader>
       </Card>
