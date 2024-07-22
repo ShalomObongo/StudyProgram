@@ -7,6 +7,7 @@ import { ProgressTracker } from './ProgressTracker';
 import { CalendarView } from './CalendarView';
 import { CourseCard } from './CourseCard';
 import { DarkModeToggle } from './DarkModeToggle';
+import { PomodoroTimer } from './PomodoroTimer';
 
 interface Exam {
   date: string;
@@ -196,7 +197,8 @@ export default function StudyProgram() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <PomodoroTimer />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 mt-4">
         {courses.map((course, index) => (
           <CourseCard 
             key={index} 
