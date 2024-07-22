@@ -13,9 +13,10 @@ interface CourseCardProps {
   };
   currentDate: Date;
   studyAidLink?: string;
+  onGenerateTips: () => void;
 }
 
-export function CourseCard({ exam, currentDate, studyAidLink }: CourseCardProps) {
+export function CourseCard({ exam, currentDate, studyAidLink, onGenerateTips }: CourseCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const courseName = exam.course.split(': ')[1];
   const examDate = new Date(exam.date);
@@ -53,6 +54,9 @@ export function CourseCard({ exam, currentDate, studyAidLink }: CourseCardProps)
             <Button variant="outline" size="sm">View Study Aid</Button>
           </Link>
         )}
+        <Button variant="outline" size="sm" onClick={onGenerateTips} className="mt-2">
+          Generate Study Tips
+        </Button>
       </CardContent>
     </Card>
   );

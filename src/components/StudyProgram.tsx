@@ -2,12 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useDarkMode } from '@/contexts/DarkModeContext';
 import { ProgressTracker } from './ProgressTracker';
 import { CalendarView } from './CalendarView';
 import { CourseCard } from './CourseCard';
 import { DarkModeToggle } from './DarkModeToggle';
 import { PomodoroTimer } from './PomodoroTimer';
+import { streamGeminiResponse } from '@/lib/gemini-api';
+import { LoadingBar } from './LoadingBar';
+import { marked } from 'marked';
+
+const convertMarkdownToHtml = (markdown: string) => {
+  return marked(markdown);
+};
 
 interface Exam {
   date: string;
@@ -145,9 +153,18 @@ function formatTime(date: Date): string {
   return date.toTimeString().slice(0, 5);
 }
 
+const formatStudyTips = (tips: string) => {
+  return tips.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+};
+
 export default function StudyProgram() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date('2024-07-22'));
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const [studyTips, setStudyTips] = useState<string>('');
+  const [isLoadingTips, setIsLoadingTips] = useState<boolean>(false);
+  const [loadingProgress, setLoadingProgress] = useState<number>(0);
+  const [chatInput, setChatInput] = useState<string>('');
+  const [chatHistory, setChatHistory] = useState<{ role: string; content: string }[]>([]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -158,6 +175,54 @@ export default function StudyProgram() {
   }, [isDarkMode]);
 
   const schedule = generateDetailedStudyPlan(currentDate, exams);
+
+  const generateStudyTips = async (course: string) => {
+    setIsLoadingTips(true);
+    setStudyTips('');
+    setLoadingProgress(0);
+    try {
+      const prompt = `Generate 3 concise study tips for the ${course} course. Focus on effective learning strategies. Format the output as a numbered list with each tip on a new line. Use markdown formatting to make important words or phrases bold.`;
+      const stream = streamGeminiResponse(prompt);
+      let fullResponse = '';
+      for await (const chunk of stream) {
+        fullResponse += chunk;
+        setStudyTips(fullResponse);
+        setLoadingProgress((prev) => Math.min(prev + 10, 90));
+      }
+    } catch (error) {
+      console.error('Error generating study tips:', error);
+      setStudyTips('Failed to generate study tips. Please try again later.');
+    } finally {
+      setIsLoadingTips(false);
+      setLoadingProgress(100);
+    }
+  };
+
+  const handleChatSubmit = async () => {
+    if (!chatInput.trim() || !studyTips) return;
+
+    const newMessage = { role: 'user', content: chatInput };
+    setChatHistory(prev => [...prev, newMessage]);
+    setChatInput('');
+
+    try {
+      const prompt = `Based on the following study tips:\n\n${studyTips}\n\nUser question: ${chatInput}\n\nProvide a concise answer using markdown formatting:`;
+      const stream = streamGeminiResponse(prompt);
+      let fullResponse = '';
+      const aiResponse = { role: 'assistant', content: '' };
+      setChatHistory(prev => [...prev, aiResponse]);
+
+      for await (const chunk of stream) {
+        fullResponse += chunk;
+        aiResponse.content = fullResponse;
+        setChatHistory(prev => [...prev.slice(0, -1), { ...aiResponse }]);
+      }
+    } catch (error) {
+      console.error('Error generating chat response:', error);
+      const errorResponse = { role: 'assistant', content: 'Sorry, I encountered an error while generating a response. Please try again.' };
+      setChatHistory(prev => [...prev, errorResponse]);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -205,9 +270,61 @@ export default function StudyProgram() {
             exam={exams[index]} 
             currentDate={currentDate} 
             studyAidLink={course === 'OR' ? '/exam-study-aid' : undefined}
+            onGenerateTips={() => generateStudyTips(course)}
           />
         ))}
       </div>
+      {isLoadingTips && (
+        <Card className="mb-4">
+          <CardHeader>
+            <CardTitle>Generating Study Tips...</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <LoadingBar progress={loadingProgress} />
+          </CardContent>
+        </Card>
+      )}
+      {studyTips && (
+        <Card className="mb-4">
+          <CardHeader>
+            <CardTitle>Study Tips and Chat</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div 
+              className="whitespace-pre-line mb-4"
+              dangerouslySetInnerHTML={{ __html: formatStudyTips(studyTips) }}
+            />
+            <div className="mb-2 max-h-40 overflow-y-auto">
+              {chatHistory.map((message, index) => (
+                <div key={index} className={`mb-2 ${message.role === 'user' ? 'text-blue-600' : 'text-green-600'}`}>
+                  <strong>{message.role === 'user' ? 'You: ' : 'AI: '}</strong>
+                  {message.role === 'user' ? (
+                    message.content
+                  ) : (
+                    <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleChatSubmit()}
+                placeholder="Ask a question about the study tips..."
+                className="flex-grow p-2 border rounded-l-md"
+              />
+              <Button 
+                onClick={handleChatSubmit}
+                className="rounded-l-none"
+              >
+                Send
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       <ProgressTracker exams={exams} currentDate={currentDate} />
     </div>
   );
