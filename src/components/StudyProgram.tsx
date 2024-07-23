@@ -13,8 +13,8 @@ import { streamGeminiResponse } from '@/lib/gemini-api';
 import { LoadingBar } from './LoadingBar';
 import { marked } from 'marked';
 
-const convertMarkdownToHtml = (markdown: string) => {
-  return marked(markdown);
+const convertMarkdownToHtml = (markdown: string): string => {
+  return marked.parse(markdown, { async: false }) as string;
 };
 
 interface Exam {

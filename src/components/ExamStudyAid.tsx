@@ -246,7 +246,7 @@ const ExamStudyAid = () => {
                 {aiContent[topic.title]?.content && (
                   <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
                     <h4 className="font-semibold mb-2">AI-Generated Summary:</h4>
-                    <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(aiContent[topic.title].content) }} />
+                    <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(aiContent[topic.title].content) as string }} />
                     <div className="mt-4">
                       <h4 className="font-semibold mb-2">Chat:</h4>
                       <div className="mb-2 max-h-40 overflow-y-auto">
@@ -256,7 +256,7 @@ const ExamStudyAid = () => {
                             {message.role === 'user' ? (
                               message.content
                             ) : (
-                              <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
+                              <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) as string }} />
                             )}
                           </div>
                         ))}
