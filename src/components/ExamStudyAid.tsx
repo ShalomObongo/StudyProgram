@@ -24,7 +24,7 @@ const topics = [
       "Finding inverse of matrix (2*2, 3*3, 4*4, etc.)"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/matrix-algebra/" },
+      { type: "Notes", link: "https://www.geeksforgeeks.org/matrices/" },
       { type: "Video", link: "https://www.youtube.com/watch?v=yRwQ7A6jVLk" }
     ]
   },
@@ -35,8 +35,8 @@ const topics = [
       "Solve Two and Three industry models"
     ],
     resources: [
-      { type: "Notes", link: "https://www.investopedia.com/terms/i/input-output-analysis.asp" },
-      { type: "Video", link: "https://study.com/academy/lesson/input-output-model.html" }
+      { type: "Notes", link: "https://www.geeksforgeeks.org/introduction-to-input-output-interface/" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=ivrxH4bSAtY" }
     ]
   },
   {
@@ -48,8 +48,8 @@ const topics = [
       "Solve steady state probabilities/Long-run probabilities"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/probability/markov-chains" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=0X1c9x9T8H4" }
+      { type: "Notes", link: "https://www.geeksforgeeks.org/markov-chain/" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=rHdX3ANxofs" }
     ]
   },
   {
@@ -60,7 +60,7 @@ const topics = [
       "Solve LPP using graphical method"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/optimization/linear-programming" },
+      { type: "Notes", link: "https://www.geeksforgeeks.org/linear-programming/" },
       { type: "Video", link: "https://www.youtube.com/watch?v=Bzzqx1F23a8" }
     ]
   },
@@ -71,8 +71,8 @@ const topics = [
       "Solve LPP using simplex method"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/optimization/simplex-method" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=3b4xT6cW8rM" }
+      { type: "Notes", link: "https://www.geeksforgeeks.org/linear-algebra/" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=vVzjXpwW2xI" }
     ]
   },
   {
@@ -83,8 +83,8 @@ const topics = [
       "Apply sensitivity analysis in interpretation of business problems"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/optimization/duality" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=Kqz6L8s6h3E" }
+      { type: "Notes", link: "https://www.investopedia.com/articles/investing/050615/fiscal-vs-monetary-policy-pros-cons.asp" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=YrEwvm-l6Cg" }
     ]
   },
   {
@@ -95,8 +95,8 @@ const topics = [
       "Using the Least Cost Cell Method to solve transportation problem"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/optimization/transportation-problem" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=G2mZ2p3w1L0" }
+      { type: "Notes", link: "https://www.geeksforgeeks.org/transportation-problem-set-1-introduction/" },
+      { type: "Video", link: "https://www.youtube.com/watch?v=-k_f3Cxk3TA" }
     ]
   },
   {
@@ -106,8 +106,8 @@ const topics = [
       "Solve Assignment Problems for workers, Machines etc."
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/optimization/assignment-problem" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=6ZcZs2Y3g7A" }
+      { type: "Notes", link: "https://www.geeksforgeeks.org/job-assignment-problem-using-branch-and-bound/" },
+      { type: "Video", link: "https://www.youtube.com/results?search_query=assignment+problems" }
     ]
   },
   {
@@ -119,8 +119,8 @@ const topics = [
       "Solve the network problem using PERT"
     ],
     resources: [
-      { type: "Notes", link: "https://www.statlect.com/optimization/network-flow" },
-      { type: "Video", link: "https://www.youtube.com/watch?v=6kDgU5YgZ7A" }
+      { type: "Notes", link: "https://www.geeksforgeeks.org/short-note-on-project-scheduling/" },
+      { type: "Video", link: "https://www.youtube.com/results?search_query=network+models+project+scheduling" }
     ]
   }
 ];

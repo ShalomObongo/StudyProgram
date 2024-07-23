@@ -18,6 +18,10 @@ A dynamic and interactive study program planner built with Next.js, React, and T
 - 📱 Responsive design
 - 📊 Progress tracking for overall and individual courses
 - 📚 Detailed study aid for specific courses (e.g., Operations Research)
+- ⏲️ Pomodoro Timer for focused study sessions
+- 🤖 AI-powered study tips generation
+- 💬 Chat functionality for asking questions about study tips
+- 🔔 Desktop notifications for Pomodoro Timer
 
 ## 🚀 Getting Started
 
@@ -43,7 +47,13 @@ A dynamic and interactive study program planner built with Next.js, React, and T
    pnpm install
    ```
 
-3. Run the development server:
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory and add your Google AI API key:
+   ```
+   GOOGLE_AI_API_KEY=your_api_key_here
+   ```
+
+4. Run the development server:
    ```bash
    npm run dev
    # or
@@ -52,7 +62,7 @@ A dynamic and interactive study program planner built with Next.js, React, and T
    pnpm dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## 🖥️ Usage
 
@@ -64,6 +74,9 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 4. **Progress Tracking**: Monitor your overall progress and individual course progress.
 5. **Dark Mode**: Toggle between light and dark modes for comfortable viewing.
 6. **Study Aid**: Access detailed study materials for specific courses (currently available for Operations Research).
+7. **Pomodoro Timer**: Use the built-in Pomodoro Timer for focused study sessions.
+8. **AI Study Tips**: Generate AI-powered study tips for each course.
+9. **Chat Functionality**: Ask questions about the generated study tips.
 
 ## 🛠️ Tech Stack
 
@@ -74,6 +87,8 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 - **Icons**: Lucide React
 - **Performance**: Vercel Speed Insights
 - **OG Image Generation**: @vercel/og
+- **AI Integration**: Google AI (Gemini API)
+- **Markdown Parsing**: marked
 
 ## 📁 Project Structure
 
@@ -82,8 +97,10 @@ Study-Program/
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── og/
-│   │   │       └── route.tsx
+│   │   │   ├── og/
+│   │   │   │   └── route.tsx
+│   │   │   └── gemini/
+│   │   │       └── route.ts
 │   │   ├── exam-study-aid/
 │   │   │   └── page.tsx
 │   │   ├── layout.tsx
@@ -94,19 +111,28 @@ Study-Program/
 │   │   ├── CourseCard.tsx
 │   │   ├── DarkModeToggle.tsx
 │   │   ├── ExamStudyAid.tsx
+│   │   ├── LoadingBar.tsx
+│   │   ├── PomodoroTimer.tsx
 │   │   ├── ProgressTracker.tsx
 │   │   ├── StudyProgram.tsx
 │   │   └── ui/
 │   │       ├── accordion.tsx
 │   │       ├── button.tsx
-│   │       └── card.tsx
+│   │       ├── card.tsx
+│   │       └── input.tsx
 │   ├── contexts/
 │   │   └── DarkModeContext.tsx
 │   └── lib/
-│       └── utils.ts
+│       ├── utils.ts
+│       └── gemini-api.ts
 ├── public/
+│   ├── favicon.ico
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── notification-sound.mp3
 ├── .eslintrc.json
 ├── .gitignore
+├── .deepsource.toml
 ├── next.config.mjs
 ├── package.json
 ├── postcss.config.mjs
@@ -140,6 +166,8 @@ This project is licensed under the MIT License.
 - [Lucide React](https://lucide.dev/)
 - [Vercel](https://vercel.com/)
 - [Radix UI](https://www.radix-ui.com/)
+- [Google AI (Gemini)](https://ai.google.dev/)
+- [marked](https://marked.js.org/)
 
 ---
 
