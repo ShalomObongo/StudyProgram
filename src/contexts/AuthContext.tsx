@@ -1,10 +1,11 @@
 // src/contexts/AuthContext.tsx
 "use client";
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { createClient, User } from '@supabase/supabase-js';
+import { createClient, User, SupabaseClient } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
+  supabase: SupabaseClient;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
@@ -13,30 +14,26 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [supabase, setSupabase] = useState<any>(null);
 
   useEffect(() => {
-    const initializeSupabase = async () => {
-      const response = await fetch('/api/supabase-config');
-      const { supabaseUrl, supabaseAnonKey } = await response.json();
-      const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
-      setSupabase(supabaseClient);
-
-      const { data: { session } } = await supabaseClient.auth.getSession();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+    });
 
-      const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
-        setUser(session?.user ?? null);
-      });
-
-      return () => {
-        authListener.subscription.unsubscribe();
-      };
+    return () => {
+      subscription.unsubscribe();
     };
-
-    initializeSupabase();
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -62,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, resetPassword, updatePassword }}>
+    <AuthContext.Provider value={{ user, supabase, signIn, signOut, resetPassword, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );
