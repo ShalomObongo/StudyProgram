@@ -6,6 +6,19 @@ import { Input } from '@/components/ui/input';
 const DEFAULT_WORK_TIME = 25 * 60; // 25 minutes in seconds
 const DEFAULT_BREAK_TIME = 5 * 60; // 5 minutes in seconds
 
+const sendNotification = (isWork: boolean) => {
+  if ('Notification' in window) {
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        new Notification('Pomodoro Timer', {
+          body: isWork ? 'Time for a break!' : 'Time to work!',
+          icon: '/favicon.ico',
+        });
+      }
+    });
+  }
+};
+
 export function PomodoroTimer() {
   const [workTime, setWorkTime] = useState(DEFAULT_WORK_TIME);
   const [breakTime, setBreakTime] = useState(DEFAULT_BREAK_TIME);
@@ -33,7 +46,7 @@ export function PomodoroTimer() {
       }
       setIsActive(false);
       playNotification();
-      sendNotification();
+      sendNotification(isWork);
     }
 
     return () => {
@@ -81,19 +94,6 @@ export function PomodoroTimer() {
     if (audioRef.current) {
       audioRef.current.play().catch(error => {
         console.error('Audio playback failed:', error);
-      });
-    }
-  };
-
-  const sendNotification = () => {
-    if ('Notification' in window) {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          new Notification('Pomodoro Timer', {
-            body: isWork ? 'Time for a break!' : 'Time to work!',
-            icon: '/favicon.ico',
-          });
-        }
       });
     }
   };

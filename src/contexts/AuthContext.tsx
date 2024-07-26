@@ -1,8 +1,7 @@
 // src/contexts/AuthContext.tsx
 "use client";
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { supabase } from '@/lib/supabase';
-import { User } from '@supabase/supabase-js';
+import { createClient, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
@@ -16,21 +15,28 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [supabase, setSupabase] = useState<any>(null);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-    };
-    fetchSession();
+    const initializeSupabase = async () => {
+      const response = await fetch('/api/supabase-config');
+      const { supabaseUrl, supabaseAnonKey } = await response.json();
+      const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+      setSupabase(supabaseClient);
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
       setUser(session?.user ?? null);
-    });
 
-    return () => {
-      authListener.subscription.unsubscribe();
+      const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        setUser(session?.user ?? null);
+      });
+
+      return () => {
+        authListener.subscription.unsubscribe();
+      };
     };
+
+    initializeSupabase();
   }, []);
 
   const signIn = async (email: string, password: string) => {
