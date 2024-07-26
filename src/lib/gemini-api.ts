@@ -21,3 +21,21 @@ export async function* streamGeminiResponse(prompt: string): AsyncGenerator<stri
     await new Promise(resolve => setTimeout(resolve, 10)); // Add a small delay between chunks
   }
 }
+
+export async function generateAnswer(question: string): Promise<string> {
+  const prompt = `Generate a concise answer for the following question:\n\n${question}\n\nAnswer:`;
+  const response = await fetch('/api/gemini', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prompt }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to generate answer');
+  }
+
+  const data = await response.json();
+  return data.text;
+}

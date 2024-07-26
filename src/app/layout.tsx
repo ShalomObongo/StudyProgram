@@ -4,6 +4,7 @@ import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { Analytics } from "@vercel/analytics/react"
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,13 +42,15 @@ export default function RootLayout({
         <link rel="icon" href="/icon-192x192.png" type="image/png" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
       </head>
-      <DarkModeProvider>
-        <body className={inter.className}>
-          {children}
-          <SpeedInsights />
-          <Analytics />
-        </body>
-      </DarkModeProvider>
+      <AuthProvider>
+        <DarkModeProvider>
+          <body className={inter.className}>
+            {children}
+            <SpeedInsights />
+            <Analytics />
+          </body>
+        </DarkModeProvider>
+      </AuthProvider>
     </html>
   );
 }

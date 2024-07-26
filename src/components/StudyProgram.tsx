@@ -12,6 +12,7 @@ import { PomodoroTimer } from './PomodoroTimer';
 import { streamGeminiResponse } from '@/lib/gemini-api';
 import { LoadingBar } from './LoadingBar';
 import { marked } from 'marked';
+import Link from 'next/link';
 
 const convertMarkdownToHtml = (markdown: string): string => {
   return marked.parse(markdown, { async: false }) as string;
@@ -326,6 +327,17 @@ export default function StudyProgram() {
         </Card>
       )}
       <ProgressTracker exams={exams} currentDate={currentDate} />
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle>Question and Answer Generator</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="mb-4">Generate Q&A cards to help with your study sessions.</p>
+          <Link href="/qa-generator">
+            <Button>Open Q&A Generator</Button>
+          </Link>
+        </CardContent>
+      </Card>
     </div>
   );
 }
