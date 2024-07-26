@@ -1,5 +1,5 @@
 // src/app/password-reset/page.tsx
-import { PasswordReset } from '@/components/PasswordReset';
+import PasswordReset from '@/components/PasswordReset';
 
 export default function PasswordResetPage() {
   return (
