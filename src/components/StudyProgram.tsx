@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useDarkMode } from '@/contexts/DarkModeContext';
 import { ProgressTracker } from './ProgressTracker';
@@ -13,6 +13,10 @@ import { streamGeminiResponse } from '@/lib/gemini-api';
 import { LoadingBar } from './LoadingBar';
 import { marked } from 'marked';
 import Link from 'next/link';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Calendar, Clock, BookOpen, Brain, Send } from 'lucide-react';
 
 const convertMarkdownToHtml = (markdown: string): string => {
   return marked.parse(markdown, { async: false }) as string;
@@ -226,115 +230,170 @@ export default function StudyProgram() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold mb-2 sm:mb-0">Study Program</h1>
-        <div className="flex items-center">
-          <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-        </div>
+    <div className="max-w-7xl mx-auto p-6 space-y-8 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-purple-900 min-h-screen">
+      <div className="flex justify-between items-center">
+        <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Study Program</h1>
+        <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle>Calendar</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CalendarView
-              currentDate={currentDate}
-              onDateChange={setCurrentDate}
-              exams={exams}
-            />
-          </CardContent>
-        </Card>
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle>Detailed Study Program</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <h2 className="text-xl font-bold mb-4">{currentDate.toDateString()}</h2>
-            <div className="space-y-2 max-h-[400px] overflow-y-auto">
-              {schedule.map((item, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span className="font-semibold">{item.time}</span>
-                  <span>{item.activity}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-      <PomodoroTimer />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 mt-4">
-        {courses.map((course, index) => (
-          <CourseCard 
-            key={index} 
-            exam={exams[index]} 
-            currentDate={currentDate} 
-            studyAidLink={course === 'OR' ? '/exam-study-aid' : undefined}
-            onGenerateTips={() => generateStudyTips(course)}
-          />
-        ))}
-      </div>
-      {isLoadingTips && (
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle>Generating Study Tips...</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <LoadingBar progress={loadingProgress} />
-          </CardContent>
-        </Card>
-      )}
-      {studyTips && (
-        <Card className="mb-4">
-          <CardHeader>
-            <CardTitle>Study Tips and Chat</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div 
-              className="whitespace-pre-line mb-4"
-              dangerouslySetInnerHTML={{ __html: formatStudyTips(studyTips) }}
-            />
-            <div className="mb-2 max-h-40 overflow-y-auto">
-              {chatHistory.map((message, index) => (
-                <div key={index} className={`mb-2 ${message.role === 'user' ? 'text-blue-600' : 'text-green-600'}`}>
-                  <strong>{message.role === 'user' ? 'You: ' : 'AI: '}</strong>
-                  {message.role === 'user' ? (
-                    message.content
-                  ) : (
-                    <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex">
-              <input
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleChatSubmit()}
-                placeholder="Ask a question about the study tips..."
-                className="flex-grow p-2 border rounded-l-md"
+
+      <Tabs defaultValue="calendar" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="calendar" className="flex items-center space-x-2">
+            <Calendar className="w-4 h-4" />
+            <span>Calendar & Schedule</span>
+          </TabsTrigger>
+          <TabsTrigger value="courses" className="flex items-center space-x-2">
+            <BookOpen className="w-4 h-4" />
+            <span>Courses & Study Tips</span>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="calendar">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Calendar className="w-5 h-5 text-blue-500" />
+                  <span>Exam Calendar</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CalendarView
+                  currentDate={currentDate}
+                  onDateChange={setCurrentDate}
+                  exams={exams}
+                />
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Clock className="w-5 h-5 text-purple-500" />
+                  <span>Daily Schedule</span>
+                </CardTitle>
+                <CardDescription>{currentDate.toDateString()}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-4">
+                    {schedule.map((item, index) => (
+                      <div key={index} className="flex items-center space-x-4 p-2 rounded-lg bg-white dark:bg-gray-800 shadow">
+                        <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
+                          <Clock className="w-4 h-4 text-blue-500 dark:text-blue-300" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm text-gray-600 dark:text-gray-300">{item.time}</p>
+                          <p className="text-sm">{item.activity}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Brain className="w-5 h-5 text-green-500" />
+                <span>Pomodoro Timer</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <PomodoroTimer />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="courses">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course, index) => (
+              <CourseCard 
+                key={index} 
+                exam={exams[index]} 
+                currentDate={currentDate} 
+                studyAidLink={course === 'OR' ? '/exam-study-aid' : undefined}
+                onGenerateTips={() => generateStudyTips(course)}
               />
-              <Button 
-                onClick={handleChatSubmit}
-                className="rounded-l-none"
-              >
-                Send
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            ))}
+          </div>
+
+          {isLoadingTips && (
+            <Card className="mt-6 shadow-lg">
+              <CardHeader>
+                <CardTitle>Generating Study Tips...</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LoadingBar progress={loadingProgress} />
+              </CardContent>
+            </Card>
+          )}
+
+          {studyTips && (
+            <Card className="mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Brain className="w-5 h-5 text-purple-500" />
+                  <span>Study Tips and Chat</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div 
+                  className="prose dark:prose-invert max-w-none mb-4"
+                  dangerouslySetInnerHTML={{ __html: formatStudyTips(studyTips) }}
+                />
+                <ScrollArea className="h-[200px] mb-4">
+                  <div className="space-y-4">
+                    {chatHistory.map((message, index) => (
+                      <div key={index} className={`p-3 rounded-lg ${
+                        message.role === 'user' ? 'bg-blue-100 dark:bg-blue-900 ml-4' : 'bg-gray-100 dark:bg-gray-800 mr-4'
+                      }`}>
+                        <strong className={message.role === 'user' ? 'text-blue-600 dark:text-blue-300' : 'text-green-600 dark:text-green-300'}>
+                          {message.role === 'user' ? 'You: ' : 'AI: '}
+                        </strong>
+                        {message.role === 'user' ? (
+                          message.content
+                        ) : (
+                          <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+                <div className="flex space-x-2">
+                  <Input
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleChatSubmit()}
+                    placeholder="Ask a question about the study tips..."
+                    className="flex-grow"
+                  />
+                  <Button onClick={handleChatSubmit} className="flex items-center space-x-2">
+                    <Send className="w-4 h-4" />
+                    <span>Send</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+      </Tabs>
+
       <ProgressTracker exams={exams} currentDate={currentDate} />
-      <Card className="mb-4">
+
+      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardHeader>
-          <CardTitle>Question and Answer Generator</CardTitle>
+          <CardTitle className="flex items-center space-x-2">
+            <BookOpen className="w-5 h-5 text-indigo-500" />
+            <span>Question and Answer Generator</span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="mb-4">Generate Q&A cards to help with your study sessions.</p>
           <Link href="/qa-generator">
-            <Button>Open Q&A Generator</Button>
+            <Button className="w-full sm:w-auto">Open Q&A Generator</Button>
           </Link>
         </CardContent>
       </Card>

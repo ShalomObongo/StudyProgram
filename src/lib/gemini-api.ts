@@ -33,9 +33,35 @@ export async function generateAnswer(question: string): Promise<string> {
   });
 
   if (!response.ok) {
+    if (response.status === 429) {
+      throw new Error('API limit reached');
+    }
     throw new Error('Failed to generate answer');
   }
 
   const data = await response.json();
   return data.text;
+}
+
+export async function generateQuestions(text: string, numQuestions: number = 5): Promise<string[]> {
+  const prompt = `Generate ${numQuestions} questions based on the following text:\n\n${text}\n\nQuestions:`;
+  const response = await fetch('/api/gemini', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prompt }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to generate questions');
+  }
+
+  const data = await response.json();
+  const generatedText = data.text;
+  
+  // Extract questions from the generated text
+  const questions = generatedText.split('\n').filter((line: string) => line.trim().endsWith('?'));
+  
+  return questions.slice(0, numQuestions);
 }
