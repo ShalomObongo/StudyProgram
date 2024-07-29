@@ -22,6 +22,13 @@ A dynamic and interactive study program planner built with Next.js, React, and T
 - 🤖 AI-powered study tips generation
 - 💬 Chat functionality for asking questions about study tips
 - 🔔 Desktop notifications for Pomodoro Timer
+- 📝 Q&A Generator for creating study cards
+- 🧠 Quiz mode for self-assessment
+- 💾 Save and load Q&A sets
+- 🔍 Search functionality for questions and answers
+- 🤖 Floating chatbot for assistance
+- 🔐 User authentication
+- 📊 OG Image generation for social media sharing
 
 ## 🚀 Getting Started
 
@@ -48,9 +55,11 @@ A dynamic and interactive study program planner built with Next.js, React, and T
    ```
 
 3. Set up environment variables:
-   Create a `.env.local` file in the root directory and add your Google AI API key:
+   Create a `.env.local` file in the root directory and add your Google AI API key and Supabase credentials:
    ```
    GOOGLE_AI_API_KEY=your_api_key_here
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
 4. Run the development server:
@@ -77,6 +86,12 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 7. **Pomodoro Timer**: Use the built-in Pomodoro Timer for focused study sessions.
 8. **AI Study Tips**: Generate AI-powered study tips for each course.
 9. **Chat Functionality**: Ask questions about the generated study tips.
+10. **Q&A Generator**: Create custom question and answer cards for studying.
+11. **Quiz Mode**: Test your knowledge with a quiz based on your Q&A cards.
+12. **Save/Load Q&A Sets**: Manage your study sets by saving and loading them.
+13. **Search**: Easily find specific questions or answers within your study sets.
+14. **Floating Chatbot**: Get assistance anytime with the floating chatbot feature.
+15. **Authentication**: Secure your study data with user authentication.
 
 ## 🛠️ Tech Stack
 
@@ -89,6 +104,8 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 - **OG Image Generation**: @vercel/og
 - **AI Integration**: Google AI (Gemini API)
 - **Markdown Parsing**: marked
+- **Authentication & Database**: Supabase
+- **PWA Support**: next-pwa
 
 ## 📁 Project Structure
 
@@ -103,6 +120,10 @@ Study-Program/
 │   │   │       └── route.ts
 │   │   ├── exam-study-aid/
 │   │   │   └── page.tsx
+│   │   ├── qa-generator/
+│   │   │   └── page.tsx
+│   │   ├── update-password/
+│   │   │   └── page.tsx
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
 │   │   └── globals.css
@@ -111,28 +132,46 @@ Study-Program/
 │   │   ├── CourseCard.tsx
 │   │   ├── DarkModeToggle.tsx
 │   │   ├── ExamStudyAid.tsx
+│   │   ├── FloatingChatbot.tsx
 │   │   ├── LoadingBar.tsx
+│   │   ├── Pagination.tsx
 │   │   ├── PomodoroTimer.tsx
 │   │   ├── ProgressTracker.tsx
+│   │   ├── QACard.tsx
+│   │   ├── QAGenerator.tsx
+│   │   ├── QuizMode.tsx
+│   │   ├── SignIn.tsx
 │   │   ├── StudyProgram.tsx
+│   │   ├── TextUpload.tsx
 │   │   └── ui/
 │   │       ├── accordion.tsx
+│   │       ├── alert.tsx
 │   │       ├── button.tsx
 │   │       ├── card.tsx
-│   │       └── input.tsx
+│   │       ├── input.tsx
+│   │       ├── scroll-area.tsx
+│   │       └── tabs.tsx
 │   ├── contexts/
+│   │   ├── AuthContext.tsx
 │   │   └── DarkModeContext.tsx
-│   └── lib/
-│       ├── utils.ts
-│       └── gemini-api.ts
+│   ├── lib/
+│   │   ├── gemini-api.ts
+│   │   ├── supabase.ts
+│   │   └── utils.ts
+│   └── utils/
+│       └── questionExtractor.ts
 ├── public/
 │   ├── favicon.ico
+│   ├── icon-192x192.png
+│   ├── icon-512x512.png
+│   ├── manifest.json
 │   ├── next.svg
 │   ├── vercel.svg
 │   └── notification-sound.mp3
 ├── .eslintrc.json
 ├── .gitignore
 ├── .deepsource.toml
+├── components.json
 ├── next.config.mjs
 ├── package.json
 ├── postcss.config.mjs
@@ -144,10 +183,11 @@ Study-Program/
 
 The project uses several configuration files:
 
-- `next.config.mjs`: Next.js configuration
+- `next.config.mjs`: Next.js configuration with PWA support
 - `tailwind.config.ts`: Tailwind CSS customization
 - `tsconfig.json`: TypeScript compiler options
 - `postcss.config.mjs`: PostCSS plugins (for Tailwind CSS)
+- `components.json`: Shadcn UI configuration
 
 ## 🤝 Contributing
 
@@ -168,6 +208,8 @@ This project is licensed under the MIT License.
 - [Radix UI](https://www.radix-ui.com/)
 - [Google AI (Gemini)](https://ai.google.dev/)
 - [marked](https://marked.js.org/)
+- [Supabase](https://supabase.io/)
+- [next-pwa](https://github.com/shadowwalker/next-pwa)
 
 ---
 
