@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Youtube } from 'lucide-react';
+import { decodeHTMLEntities } from '@/utils/helpers';
 
 interface QACardProps {
   question: string;
   answer: string;
   showAnswer?: boolean;
   difficulty?: string;
+  youtubeQuery?: string;
 }
 
-export function QACard({ question, answer, showAnswer = true, difficulty }: QACardProps) {
+export function QACard({ question, answer, showAnswer = true, difficulty, youtubeQuery }: QACardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
@@ -46,7 +48,20 @@ export function QACard({ question, answer, showAnswer = true, difficulty }: QACa
       {isExpanded && (
         <CardContent className="p-4 bg-white dark:bg-gray-800">
           {showAnswer ? (
-            <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: answer }} />
+            <>
+              <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: answer }} />
+              {youtubeQuery && (
+                <a
+                  href={`https://www.youtube.com/results?search_query=${encodeURIComponent(decodeHTMLEntities(youtubeQuery))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center text-blue-500 hover:text-blue-600"
+                >
+                  <Youtube className="h-4 w-4 mr-2" />
+                  Watch related videos on YouTube
+                </a>
+              )}
+            </>
           ) : (
             <p className="italic text-gray-500">Answer hidden</p>
           )}

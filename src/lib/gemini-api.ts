@@ -1,3 +1,5 @@
+import { marked } from "marked";
+
 export async function* streamGeminiResponse(prompt: string): AsyncGenerator<string> {
   const response = await fetch('/api/gemini', {
     method: 'POST',
@@ -22,8 +24,14 @@ export async function* streamGeminiResponse(prompt: string): AsyncGenerator<stri
   }
 }
 
-export async function generateAnswer(question: string): Promise<string> {
-  const prompt = `Generate a concise answer for the following question:\n\n${question}\n\nAnswer:`;
+export async function generateAnswer(question: string): Promise<{ answer: string; youtubeQuery: string }> {
+  const prompt = `Generate a concise answer for the following question and provide a YouTube search query to help understand the topic better:
+
+Question: ${question}
+
+Answer:
+YouTube Search Query:`;
+
   const response = await fetch('/api/gemini', {
     method: 'POST',
     headers: {
@@ -40,7 +48,31 @@ export async function generateAnswer(question: string): Promise<string> {
   }
 
   const data = await response.json();
-  return data.text;
+  const [rawAnswer, rawYoutubeQuery] = data.text.split('YouTube Search Query:');
+
+  // Extract and format the YouTube query
+  const formattedYoutubeQuery = rawYoutubeQuery
+    .trim()
+    .replace(/^\*\*/, '') // Remove leading asterisks
+    .replace(/\*\*$/, '') // Remove trailing asterisks
+    .replace(/^["']|["']$/g, '') // Remove leading/trailing quotes
+    .split(/\s*(?:\.|\n)/, 1)[0] // Split at first period or newline, take first part
+    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .trim();
+
+  console.log('Raw YouTube Query:', rawYoutubeQuery);
+  console.log('Formatted YouTube Query:', formattedYoutubeQuery);
+
+  return {
+    answer: rawAnswer.trim(),
+    youtubeQuery: formattedYoutubeQuery,
+  };
+}
+
+function decodeHTMLEntities(text: string): string {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
 }
 
 export async function generateQuestions(text: string, numQuestions: number = 5): Promise<string[]> {

@@ -18,11 +18,13 @@ import { FloatingChatbot } from './FloatingChatbot';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Save, Upload, Search, Book, ArrowLeft } from 'lucide-react';
+import { decodeHTMLEntities } from '@/utils/helpers';
 
 interface QAPair {
   question: string;
   answer: string;
   difficulty: string;
+  youtubeQuery: string;
 }
 const convertMarkdownToHtml = (markdown: string): string => {
   return marked.parse(markdown) as string;
@@ -33,7 +35,7 @@ export function QAGenerator() {
   const [qaPairs, setQAPairs] = useState<QAPair[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const cache = useRef<Record<string, string>>({});
+  const cache = useRef<Record<string, { answer: string; youtubeQuery: string }>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   const [setName, setSetName] = useState('');
@@ -51,15 +53,15 @@ export function QAGenerator() {
     try {
       for (const { question, difficulty } of extractedQuestions) {
         if (question in cache.current) {
-          const answer = cache.current[question];
-          const formattedAnswer = await marked(answer);
-          newQAPairs.push({ question, answer: formattedAnswer, difficulty });
+          const { answer, youtubeQuery } = cache.current[question];
+          const formattedAnswer = marked.parse(answer) as string;
+          newQAPairs.push({ question, answer: formattedAnswer, difficulty, youtubeQuery: decodeHTMLEntities(youtubeQuery) });
         } else {
           try {
-            const answer = await generateAnswer(question);
-            cache.current[question] = answer;
-            const formattedAnswer = await marked(answer);
-            newQAPairs.push({ question, answer: formattedAnswer, difficulty });
+            const { answer, youtubeQuery } = await generateAnswer(question);
+            cache.current[question] = { answer, youtubeQuery };
+            const formattedAnswer = marked.parse(answer) as string;
+            newQAPairs.push({ question, answer: formattedAnswer, difficulty, youtubeQuery: decodeHTMLEntities(youtubeQuery) });
           } catch (error) {
             if (error instanceof Error && error.message === 'API limit reached') {
               setError('API limit reached. Some questions could not be answered.');
@@ -93,7 +95,7 @@ export function QAGenerator() {
     try {
       const qaSetData = { 
         name: setName, 
-        qa_pairs: qaPairs.map(({ question, answer, difficulty }) => ({ question, answer, difficulty }))
+        qa_pairs: qaPairs.map(({ question, answer, difficulty, youtubeQuery }) => ({ question, answer, difficulty, youtubeQuery }))
       };
       console.log('Saving Q&A set:', JSON.stringify(qaSetData, null, 2));
       const { data, error } = await supabase
@@ -123,7 +125,8 @@ export function QAGenerator() {
       setQAPairs(data.qa_pairs.map((pair: any) => ({
         question: pair.question,
         answer: pair.answer,
-        difficulty: pair.difficulty || 'Medium'
+        difficulty: pair.difficulty || 'Medium',
+        youtubeQuery: pair.youtubeQuery
       })));
       setError('Q&A set loaded successfully');
     } catch (err) {
@@ -144,7 +147,10 @@ export function QAGenerator() {
       const prompt = `Based on the following Q&A pairs:\n\n${context}\n\nUser question: ${chatInput}\n\nProvide a concise answer:`;
       
       const response = await generateAnswer(prompt);
-      const aiResponse = { role: 'assistant', content: response };
+      const aiResponse = { 
+        role: 'assistant', 
+        content: JSON.stringify(response) // Stringify the response object
+      };
       setChatHistory(prev => [...prev, aiResponse]);
     } catch (error) {
       console.error('Error generating chat response:', error);
@@ -189,7 +195,7 @@ export function QAGenerator() {
 
       <Card className="mb-8 shadow-lg">
         <CardHeader>
-          <CardTitle>Upload Questions</CardTitle>
+          {/* <CardTitle>Upload Questions</CardTitle> */}
         </CardHeader>
         <CardContent>
           <TextUpload onTextSubmit={handleTextSubmit} />
@@ -254,7 +260,7 @@ export function QAGenerator() {
         ) : (
           <>
             {currentItems.map((pair, index) => (
-              <QACard key={index} question={pair.question} answer={pair.answer} difficulty={pair.difficulty} />
+              <QACard key={index} question={pair.question} answer={pair.answer} difficulty={pair.difficulty} youtubeQuery={pair.youtubeQuery} />
             ))}
           </>
         )}

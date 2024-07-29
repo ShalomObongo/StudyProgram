@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageCircle, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { MessageCircle, X, ChevronDown, ChevronUp, Youtube } from 'lucide-react';
+import { decodeHTMLEntities } from '@/utils/helpers';
 
 interface FloatingChatbotProps {
   chatHistory: { role: string; content: string }[];
@@ -85,7 +86,36 @@ export function FloatingChatbot({
                     <strong className={message.role === 'user' ? 'text-blue-600 dark:text-blue-300' : 'text-green-600 dark:text-green-300'}>
                       {message.role === 'user' ? 'You: ' : 'AI: '}
                     </strong>
-                    <span className="dark:text-white" dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
+                    {message.role === 'user' ? (
+                      message.content
+                    ) : (
+                      <>
+                        {(() => {
+                          try {
+                            const parsedContent = JSON.parse(message.content);
+                            return (
+                              <>
+                                <span dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(parsedContent.answer) }} />
+                                {parsedContent.youtubeQuery && (
+                                  <a
+                                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(decodeHTMLEntities(parsedContent.youtubeQuery))}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-2 inline-flex items-center text-blue-500 hover:text-blue-600"
+                                  >
+                                    <Youtube className="h-4 w-4 mr-2" />
+                                    Watch related videos on YouTube
+                                  </a>
+                                )}
+                              </>
+                            );
+                          } catch {
+                            // If parsing fails, it's probably a plain string (like an error message)
+                            return <span dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />;
+                          }
+                        })()}
+                      </>
+                    )}
                   </div>
                 ))}
               </CardContent>

@@ -29,6 +29,9 @@ A dynamic and interactive study program planner built with Next.js, React, and T
 - 🤖 Floating chatbot for assistance
 - 🔐 User authentication
 - 📊 OG Image generation for social media sharing
+- 📱 Progressive Web App (PWA) support
+- 🎥 YouTube video suggestions for each Q&A pair
+- 🏷️ Difficulty tagging for Q&A pairs
 
 ## 🚀 Getting Started
 
@@ -92,6 +95,9 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 13. **Search**: Easily find specific questions or answers within your study sets.
 14. **Floating Chatbot**: Get assistance anytime with the floating chatbot feature.
 15. **Authentication**: Secure your study data with user authentication.
+16. **PWA Support**: Install the app on your device for offline access.
+17. **YouTube Integration**: Each Q&A pair includes a suggested YouTube video for additional learning resources.
+18. **Difficulty Tagging**: Q&A pairs are tagged with difficulty levels for better study organization.
 
 ## 🛠️ Tech Stack
 
@@ -106,6 +112,7 @@ The Study Program Planner offers an intuitive interface for managing your exam p
 - **Markdown Parsing**: marked
 - **Authentication & Database**: Supabase
 - **PWA Support**: next-pwa
+- **Video Integration**: YouTube Data API
 
 ## 📁 Project Structure
 
