@@ -25,7 +25,7 @@ export async function* streamGeminiResponse(prompt: string): AsyncGenerator<stri
 }
 
 export async function generateAnswer(question: string): Promise<{ answer: string; youtubeQuery: string }> {
-  const prompt = `Generate an answer for the following question and provide a YouTube search query to help understand the topic better:
+  const prompt = `Generate a concise answer for the following question and provide a YouTube search query to help understand the topic better:
 
 Question: ${question}
 

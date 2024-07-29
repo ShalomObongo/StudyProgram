@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(API_KEY);
 
 export async function POST(request: Request) {
   const { prompt } = await request.json();
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
