@@ -40,16 +40,16 @@ export function TextUpload({ onTextSubmit }: TextUploadProps) {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Paste your questions here..."
-            className="w-full h-32 p-2 border rounded mb-4"
+            className="w-full h-32 p-2 mb-4 futuristic-input"
           />
           <div className="flex justify-between items-center">
             <Input
               type="file"
               accept=".txt"
               onChange={handleFileUpload}
-              className="max-w-xs"
+              className="max-w-xs futuristic-input"
             />
-            <Button type="submit">Generate Q&A Cards</Button>
+            <Button type="submit" className="futuristic-button">Generate Q&A Cards</Button>
           </div>
         </form>
       </CardContent>

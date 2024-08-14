@@ -67,3 +67,95 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+  .neon-border {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.3),
+                0 0 30px rgba(0, 255, 255, 0.1);
+  }
+
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.futuristic-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.futuristic-input:focus {
+  outline: none;
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.futuristic-button {
+  background: linear-gradient(45deg, #00a8ff, #00ff7f);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.futuristic-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+}
+
+@keyframes neonGlow {
+  0% {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8),
+                 0 0 20px rgba(0, 255, 255, 0.8),
+                 0 0 30px rgba(0, 255, 255, 0.8),
+                 0 0 40px rgba(0, 255, 255, 0.8);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8),
+                 0 0 30px rgba(0, 255, 255, 0.8),
+                 0 0 40px rgba(0, 255, 255, 0.8),
+                 0 0 50px rgba(0, 255, 255, 0.8),
+                 0 0 60px rgba(0, 255, 255, 0.8);
+  }
+}
+
+.neon-text {
+  animation: neonGlow 1.5s ease-in-out infinite alternate;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+}
+
+.futuristic-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.futuristic-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.futuristic-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #00a8ff, #00ff7f);
+  border-radius: 10px;
+}
+
+.futuristic-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #00ff7f, #00a8ff);
+}

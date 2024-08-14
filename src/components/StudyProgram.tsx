@@ -17,6 +17,8 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Calendar, Clock, BookOpen, Brain, Send } from 'lucide-react';
+import { FuturisticBackground } from './FuturisticBackground';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const convertMarkdownToHtml = (markdown: string): string => {
   return marked.parse(markdown, { async: false }) as string;
@@ -230,173 +232,269 @@ export default function StudyProgram() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-8 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-purple-900 min-h-screen">
-      <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Study Program</h1>
-        <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      </div>
+    <div className="relative min-h-screen overflow-hidden">
+      <FuturisticBackground />
+      <div className="relative z-10 max-w-7xl mx-auto p-6 space-y-8">
+        <motion.div 
+          className="flex justify-between items-center"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 120 }}
+        >
+          <motion.h1 
+            className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 neon-text"
+          >
+            Study Program
+          </motion.h1>
+          <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+        </motion.div>
 
-      <Tabs defaultValue="calendar" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-4">
-          <TabsTrigger value="calendar" className="flex items-center space-x-2">
-            <Calendar className="w-4 h-4" />
-            <span>Calendar & Schedule</span>
-          </TabsTrigger>
-          <TabsTrigger value="courses" className="flex items-center space-x-2">
-            <BookOpen className="w-4 h-4" />
-            <span>Courses & Study Tips</span>
-          </TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="calendar" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-4 bg-black/30 backdrop-blur-md rounded-full">
+            <TabsTrigger value="calendar" className="flex items-center space-x-2 text-white rounded-full">
+              <Calendar className="w-4 h-4" />
+              <span>Calendar & Schedule</span>
+            </TabsTrigger>
+            <TabsTrigger value="courses" className="flex items-center space-x-2 text-white rounded-full">
+              <BookOpen className="w-4 h-4" />
+              <span>Courses & Study Tips</span>
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="calendar">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Calendar className="w-5 h-5 text-blue-500" />
-                  <span>Exam Calendar</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CalendarView
-                  currentDate={currentDate}
-                  onDateChange={setCurrentDate}
-                  exams={exams}
-                />
-              </CardContent>
-            </Card>
+          <AnimatePresence mode="wait">
+            <TabsContent value="calendar" key="calendar">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+              >
+                <Card className="glassmorphism hover-glow">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2 text-white">
+                      <Calendar className="w-5 h-5 text-blue-400" />
+                      <span>Exam Calendar</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CalendarView
+                      currentDate={currentDate}
+                      onDateChange={setCurrentDate}
+                      exams={exams}
+                    />
+                  </CardContent>
+                </Card>
 
-            <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Clock className="w-5 h-5 text-purple-500" />
-                  <span>Daily Schedule</span>
-                </CardTitle>
-                <CardDescription>{currentDate.toDateString()}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-[400px] pr-4">
-                  <div className="space-y-4">
-                    {schedule.map((item, index) => (
-                      <div key={index} className="flex items-center space-x-4 p-2 rounded-lg bg-white dark:bg-gray-800 shadow">
-                        <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
-                          <Clock className="w-4 h-4 text-blue-500 dark:text-blue-300" />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-sm text-gray-600 dark:text-gray-300">{item.time}</p>
-                          <p className="text-sm">{item.activity}</p>
-                        </div>
+                <Card className="glassmorphism hover-glow">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2 text-white">
+                      <Clock className="w-5 h-5 text-purple-400" />
+                      <span>Daily Schedule</span>
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">{currentDate.toDateString()}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[400px] pr-4 futuristic-scrollbar">
+                      <motion.div 
+                        className="space-y-4"
+                        variants={{
+                          hidden: { opacity: 0 },
+                          show: {
+                            opacity: 1,
+                            transition: {
+                              staggerChildren: 0.1
+                            }
+                          }
+                        }}
+                        initial="hidden"
+                        animate="show"
+                      >
+                        {schedule.map((item, index) => (
+                          <motion.div
+                            key={index}
+                            variants={{
+                              hidden: { opacity: 0, y: 20 },
+                              show: { opacity: 1, y: 0 }
+                            }}
+                            className="flex items-center space-x-4 p-2 rounded-lg bg-white/10 backdrop-blur-md shadow"
+                          >
+                            <div className="bg-blue-500/20 p-2 rounded-full">
+                              <Clock className="w-4 h-4 text-blue-300" />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-sm text-blue-200">{item.time}</p>
+                              <p className="text-sm text-gray-300">{item.activity}</p>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                <Card className="mt-6 glassmorphism hover-glow">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2 text-white">
+                      <Brain className="w-5 h-5 text-green-400" />
+                      <span>Pomodoro Timer</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <PomodoroTimer />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="courses" key="courses">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {courses.map((course, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <CourseCard 
+                      exam={exams[index]} 
+                      currentDate={currentDate} 
+                      studyAidLink={course === 'OR' ? '/exam-study-aid' : undefined}
+                      onGenerateTips={() => generateStudyTips(course)}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {isLoadingTips && (
+                <Card className="mt-6 glassmorphism hover-glow">
+                  <CardHeader>
+                    <CardTitle className="text-white">Generating Study Tips...</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <LoadingBar progress={loadingProgress} />
+                  </CardContent>
+                </Card>
+              )}
+
+              {studyTips && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  <Card className="mt-6 glassmorphism hover-glow">
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-white">
+                        <Brain className="w-5 h-5 text-purple-400" />
+                        <span>Study Tips and Chat</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div 
+                        className="prose dark:prose-invert max-w-none mb-4 text-gray-300"
+                        dangerouslySetInnerHTML={{ __html: formatStudyTips(studyTips) }}
+                      />
+                      <ScrollArea className="h-[200px] mb-4 futuristic-scrollbar">
+                        <motion.div 
+                          className="space-y-4"
+                          variants={{
+                            hidden: { opacity: 0 },
+                            show: {
+                              opacity: 1,
+                              transition: {
+                                staggerChildren: 0.1
+                              }
+                            }
+                          }}
+                          initial="hidden"
+                          animate="show"
+                        >
+                          {chatHistory.map((message, index) => (
+                            <motion.div
+                              key={index}
+                              variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                show: { opacity: 1, y: 0 }
+                              }}
+                              className={`p-3 rounded-lg ${
+                                message.role === 'user' ? 'bg-blue-500/20 ml-4' : 'bg-purple-500/20 mr-4'
+                              }`}
+                            >
+                              <strong className={message.role === 'user' ? 'text-blue-300' : 'text-green-300'}>
+                                {message.role === 'user' ? 'You: ' : 'AI: '}
+                              </strong>
+                              {message.role === 'user' ? (
+                                message.content
+                              ) : (
+                                <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
+                              )}
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      </ScrollArea>
+                      <div className="flex space-x-2">
+                        <Input
+                          value={chatInput}
+                          onChange={(e) => setChatInput(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && handleChatSubmit()}
+                          placeholder="Ask a question about the study tips..."
+                          className="flex-grow futuristic-input"
+                        />
+                        <Button onClick={handleChatSubmit} className="flex items-center space-x-2 futuristic-button">
+                          <Send className="w-4 h-4" />
+                          <span>Send</span>
+                        </Button>
                       </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
-          </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+            </TabsContent>
+          </AnimatePresence>
+        </Tabs>
 
-          <Card className="mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <ProgressTracker exams={exams} currentDate={currentDate} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <Card className="glassmorphism hover-glow">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Brain className="w-5 h-5 text-green-500" />
-                <span>Pomodoro Timer</span>
+              <CardTitle className="flex items-center space-x-2 text-white">
+                <BookOpen className="w-5 h-5 text-indigo-400" />
+                <span>Question and Answer Generator</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <PomodoroTimer />
+              <p className="mb-4 text-gray-300">Generate Q&A cards to help with your study sessions.</p>
+              <Link href="/qa-generator">
+                <Button className="w-full sm:w-auto futuristic-button">Open Q&A Generator</Button>
+              </Link>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="courses">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course, index) => (
-              <CourseCard 
-                key={index} 
-                exam={exams[index]} 
-                currentDate={currentDate} 
-                studyAidLink={course === 'OR' ? '/exam-study-aid' : undefined}
-                onGenerateTips={() => generateStudyTips(course)}
-              />
-            ))}
-          </div>
-
-          {isLoadingTips && (
-            <Card className="mt-6 shadow-lg">
-              <CardHeader>
-                <CardTitle>Generating Study Tips...</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <LoadingBar progress={loadingProgress} />
-              </CardContent>
-            </Card>
-          )}
-
-          {studyTips && (
-            <Card className="mt-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Brain className="w-5 h-5 text-purple-500" />
-                  <span>Study Tips and Chat</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div 
-                  className="prose dark:prose-invert max-w-none mb-4"
-                  dangerouslySetInnerHTML={{ __html: formatStudyTips(studyTips) }}
-                />
-                <ScrollArea className="h-[200px] mb-4">
-                  <div className="space-y-4">
-                    {chatHistory.map((message, index) => (
-                      <div key={index} className={`p-3 rounded-lg ${
-                        message.role === 'user' ? 'bg-blue-100 dark:bg-blue-900 ml-4' : 'bg-gray-100 dark:bg-gray-800 mr-4'
-                      }`}>
-                        <strong className={message.role === 'user' ? 'text-blue-600 dark:text-blue-300' : 'text-green-600 dark:text-green-300'}>
-                          {message.role === 'user' ? 'You: ' : 'AI: '}
-                        </strong>
-                        {message.role === 'user' ? (
-                          message.content
-                        ) : (
-                          <div dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(message.content) }} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-                <div className="flex space-x-2">
-                  <Input
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleChatSubmit()}
-                    placeholder="Ask a question about the study tips..."
-                    className="flex-grow"
-                  />
-                  <Button onClick={handleChatSubmit} className="flex items-center space-x-2">
-                    <Send className="w-4 h-4" />
-                    <span>Send</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </TabsContent>
-      </Tabs>
-
-      <ProgressTracker exams={exams} currentDate={currentDate} />
-
-      <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <BookOpen className="w-5 h-5 text-indigo-500" />
-            <span>Question and Answer Generator</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="mb-4">Generate Q&A cards to help with your study sessions.</p>
-          <Link href="/qa-generator">
-            <Button className="w-full sm:w-auto">Open Q&A Generator</Button>
-          </Link>
-        </CardContent>
-      </Card>
+        </motion.div>
+      </div>
     </div>
   );
 }
