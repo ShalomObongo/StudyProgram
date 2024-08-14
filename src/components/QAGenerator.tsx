@@ -554,8 +554,7 @@ export function QAGenerator() {
           <AlertDialogHeader>
             <AlertDialogTitle>Q&A Set Already Exists</AlertDialogTitle>
             <AlertDialogDescription>
-              A Q&A set with the name "{setName}" already exists. What would you
-              like to do?
+            A Q&A set with the name &quot;{setName}&quot; already exists. What would you like to do?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -137,7 +137,7 @@ function Explosion({ position }: { position: THREE.Vector3 }) {
     return () => {
       clock.stop();
     };
-  }, []);
+  }, [clock]);
 
   useFrame(() => {
     const elapsedTime = clock.getElapsedTime();
